@@ -204,6 +204,30 @@ def perform_mlr_alternate_models(df):
     
     return model2, model3
 
+def compare_models(models, X_test, y_test, model_names=None):
+    """
+    Compares the performance of multiple regression models.
+
+    Args:
+        models: A list of fitted statsmodels OLS models.
+        X_test: The test data (independent variables).
+        y_test: The test data (dependent variable).
+        model_names (optional): A list of model names for display.
+
+    Returns:
+        pandas.DataFrame: A DataFrame with model names, RMSE, and R-squared.
+    """
+    results = []
+    for i, model in enumerate(models):
+        y_pred = model.predict(X_test)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        r2 = r2_score(y_test, y_pred)
+
+        model_name = model_names[i] if model_names else f"Model {i+1}"
+        results.append({"Model": model_name, "RMSE": rmse, "R-squared": r2})
+
+    return pd.DataFrame(results)
+
 def main():
     # Configuration
     red_wine_path = "data/winequality-red.csv"
