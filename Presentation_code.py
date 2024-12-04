@@ -65,7 +65,7 @@ def perform_eda(data):
     save_plot("outputs/final_vis/correlation_heatmap.png")
     plt.show()
 
-    # Histogram of top 5 predictors\]
+    # Histogram of top 5 predictors
     top_predictors = ['alcohol', 'volatile acidity', 'sulphates', 'citric acid', 'density']
     plt.figure(figsize=(12, 10))
     for i, predictor in enumerate(top_predictors):
