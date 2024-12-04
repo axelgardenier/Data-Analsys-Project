@@ -1,7 +1,6 @@
 # Script to describe the dataset. 
 # i want this to be like the R's summary() function.
 
-
 # Importing necessary libraries
 import pandas as pd
 import numpy as np
