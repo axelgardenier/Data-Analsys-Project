@@ -77,6 +77,29 @@ def load_and_preprocess_data(red_wine_path, white_wine_path, output_dir="outputs
     
     return df
 
+def load_raw_data(red_wine_path, white_wine_path):
+    """Loads and combines the raw red and white wine datasets without preprocessing."""
+    try:
+        red_wine = pd.read_csv(red_wine_path, sep=';')
+        print(f"Loaded red wine data from {red_wine_path}")
+    except FileNotFoundError:
+        print(f"Error: File {red_wine_path} not found.")
+        sys.exit(1)
+
+    try:
+        white_wine = pd.read_csv(white_wine_path, sep=';')
+        print(f"Loaded white wine data from {white_wine_path}")
+    except FileNotFoundError:
+        print(f"Error: File {white_wine_path} not found.")
+        sys.exit(1)
+
+    red_wine['type'] = 'red'
+    white_wine['type'] = 'white'
+
+    raw_df = pd.concat([red_wine, white_wine], ignore_index=True)
+    print("Combined red and white wine datasets (raw).")
+    return raw_df
+
 def perform_eda(df, output_dir="outputs"):
     """
     Performs Exploratory Data Analysis (EDA) including descriptive statistics and visualizations.
@@ -236,6 +259,17 @@ def main():
     
     # Create output directories
     create_output_dirs([output_directory])
+    
+    # check for --raw flag
+    if "--raw" in sys.argv:
+        raw_df = load_raw_data(red_wine_path, white_wine_path)
+
+        perform_eda(raw_df, output_directory)
+
+        print("\nAnalysis Completed.")
+        
+        # Exit the program
+        sys.exit(0)
     
     # Step 1: Data Preparation
     df = load_and_preprocess_data(red_wine_path, white_wine_path, output_directory)

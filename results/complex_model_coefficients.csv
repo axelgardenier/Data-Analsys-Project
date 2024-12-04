@@ -1,0 +1,10 @@
+Feature,Coefficient
+alcohol,-0.7605882547627005
+volatile acidity,-5.628791103505957
+sulphates,1.5022581065260312
+alcohol^2,0.046962982721681534
+alcohol volatile acidity,0.2459160035443959
+alcohol sulphates,-0.03185034696392691
+volatile acidity^2,0.8845477621057425
+volatile acidity sulphates,1.3150630336798843
+sulphates^2,-0.7181434666445731
