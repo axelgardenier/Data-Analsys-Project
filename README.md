@@ -1,76 +1,77 @@
+# Wine Quality Analysis Project
 
----
+## Overview
 
-# Wine Quality Data Analysis
-
-This project performs comprehensive exploratory data analysis (EDA) and statistical modeling of the Wine Quality Dataset from the UCI Machine Learning Repository. The goal is to understand the factors affecting wine quality.
+This project analyzes the Wine Quality Dataset from the UCI Machine Learning Repository. It explores the relationship between various physicochemical properties of wine and its perceived quality. The analysis includes data loading, preprocessing, exploratory data analysis (EDA), and simple linear regression modeling.
 
 ## Project Structure
 
-- `simple_analsys.py`: The main script to perform data loading, preprocessing, EDA, and statistical modeling (ANOVA and Multiple Linear Regression).
-- `data/`: Directory containing the raw wine quality datasets (winequality-red.csv and winequality-white.csv).
-- `outputs/`: Directory to store the preprocessed dataset and generated visualizations (histograms, boxplots, correlation heatmap).
-- `requirements.txt`: Lists the required Python packages for this project.
-
-## Dataset
-
-The Wine Quality Dataset contains physicochemical and sensory data for red and white Vinho Verde wines from northern Portugal. The dataset can be accessed through the UCI Machine Learning Repository.
+-   **`Presentation_code.py`**: Main script containing the analysis workflow.
+-   **`data/`**: Directory for storing the raw wine quality datasets (`winequality-red.csv` and `winequality-white.csv`).
+-   **`outputs/`**: Directory to save generated visualizations and preprocessed data.
+-   **`outputs/final_vis`**: Directory to save the final version of the visualizations.
+-   **`Wine Quality Analysis.md`**: Markdown file containing a detailed report of the analysis.
 
 ## Getting Started
 
+### Prerequisites
+
+-   Python 3.x
+-   Required Python packages (install using `pip install -r requirements.txt`):
+    -   pandas
+    -   numpy
+    -   matplotlib
+    -   seaborn
+    -   scikit-learn
+
+### Installation
+
 1. **Clone the repository:**
+
     ```bash
     git clone https://github.com/axelgardenier/Data-Analsys-Project.git
+    cd Data-Analsys-Project
     ```
 
-2. **Create and activate a virtual environment:**
+2. **Create a virtual environment (recommended):**
+
     ```bash
-    python -m venv .venv
-    source .venv/bin/activate
+    python3 -m venv venv
     ```
 
-3. **Install dependencies:**
+3. **Activate the virtual environment:**
+
+    -   On Windows:
+
+        ```bash
+        .\\venv\\Scripts\\activate
+        ```
+
+    -   On macOS/Linux:
+
+        ```bash
+        source venv/bin/activate
+        ```
+
+4. **Install the required packages:**
+
     ```bash
     pip install -r requirements.txt
     ```
 
-4. **Run the analysis script:**
+### Running the Analysis
+
+1. **Execute the `Presentation_code.py` script:**
+
     ```bash
-    python simple_analsys.py
+    python Presentation_code.py
     ```
 
-The analysis results will be printed to the console, and visualizations will be saved in the `outputs/` directory. The preprocessed dataset is also saved to `outputs/preprocessed_wine_data.csv`.
+2. **View the results:**
 
-## Analysis Summary
-
-The `simple_analsys.py` script performs the following analyses:
-
-- **Data Preprocessing:** Handles missing values, combines red and white wine data, removes outliers in 'fixed acidity', and transforms outliers in 'volatile acidity'.
-- **Exploratory Data Analysis (EDA):**
-  - Descriptive statistics (count, mean, std, min, max, percentiles)
-  - Histograms of each feature
-  - Boxplots of features grouped by wine type
-  - Correlation matrix heatmap
-  - Quality distribution analysis
-- **Descriptive Statistics by Quality:** Calculates mean and standard deviation of numeric features for each quality rating.
-- **ANOVA:** Performs Analysis of Variance to test for significant differences in the means of each chemical property across different wine quality levels.
-- **Multiple Linear Regression:** Builds multiple linear regression models to predict wine quality based on chemical properties, including model refinement based on significant variables.
-
-## Further Analysis
-
-This project provides a solid foundation for further analysis, including:
-
-- **Feature Engineering:** Creating new features from existing ones to potentially improve model performance.
-- **Model Selection and Tuning:** Exploring different regression models (e.g., Ridge, Lasso, Elastic Net) and optimizing hyperparameters.
-- **Model Evaluation:** Using more robust evaluation metrics (e.g., cross-validation) to assess model generalization.
-- **Interactive Visualizations:** Creating interactive dashboards to explore the data and model results more dynamically.
+    -   The script will print descriptive statistics, regression results, and other analysis output to the console.
+    -   Visualizations (histograms, correlation heatmap, scatter plots) will be saved in the `outputs/final_vis` directory.
 
 ## Contributing
 
-Contributions to this project are welcome. Please feel free to submit issues or pull requests.
-
-## License
-
-This project is licensed under the MIT License.
-
----
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
