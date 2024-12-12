@@ -4,11 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-from mpl_toolkits.mplot3d import Axes3D
-
 
 def main():
     # --- Data Loading and Preprocessing ---
@@ -38,10 +35,6 @@ def main():
     print("Performing simple linear regression...")
     predictors = ['alcohol', 'volatile acidity', 'sulphates']
     perform_simple_regression(wine_data, predictors)
-
-    # --- Quadratic Regression with 3D Visualization ---
-    print("Performing quadratic regression and generating 3D visualization...")
-    perform_quadratic_regression(wine_data)
 
 
 def perform_eda(data):
@@ -78,6 +71,22 @@ def perform_eda(data):
     save_plot("outputs/final_vis/top_predictor_histograms.png")
     plt.show()
 
+    # Stacked Bar Chart: Wine Quality Distribution by Wine Type
+    plot_stacked_bar_chart(data)
+    print("Stacked bar chart of wine quality distribution by wine type created and saved.")
+
+def plot_stacked_bar_chart(data):
+    """Generates a stacked bar chart showing wine type distribution by quality."""
+    quality_counts = data.groupby(['quality', 'wine_type']).size().unstack()
+
+    quality_counts.plot(kind='bar', stacked=True, figsize=(10, 6), color=['#E06666', '#6699CC'])
+    plt.title('Distribution of Wine Type by Quality')
+    plt.xlabel('Quality')
+    plt.ylabel('Count')
+    plt.xticks(rotation=0)
+    plt.legend(title='Wine Type')
+    save_plot("outputs/final_vis/stacked_bar_chart.png")  # Save the plot
+    plt.show()
 
 def perform_simple_regression(data, predictors):
     os.makedirs("outputs/plots", exist_ok=True)
@@ -87,7 +96,7 @@ def perform_simple_regression(data, predictors):
         X = data[[predictor]].values
         y = data['quality'].values
 
-        # Train-test split
+        # Train-test split (42 -> meaning of life -> random_state)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
         # Linear regression
@@ -112,59 +121,11 @@ def perform_simple_regression(data, predictors):
         save_plot(f"outputs/final_vis/{predictor}_quality_scatterplot.png")
 
 
-def perform_quadratic_regression(data):
-    # Select key predictors
-    predictors = ['alcohol', 'volatile acidity']
-    X = data[predictors].values
-    y = data['quality'].values
-
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-    # Polynomial regression (degree=2)
-    poly = PolynomialFeatures(degree=2, include_bias=False)
-    X_train_poly = poly.fit_transform(X_train)
-    X_test_poly = poly.transform(X_test)
-
-    # Train model
-    model = LinearRegression()
-    model.fit(X_train_poly, y_train)
-
-    # Predictions and evaluation
-    y_pred = model.predict(X_test_poly)
-    r2 = r2_score(y_test, y_pred)
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-
-    print(f"Quadratic Model: R^2 = {r2:.3f}, RMSE = {rmse:.3f}")
-
-    alcohol_range = np.linspace(data['alcohol'].min(), data['alcohol'].max(), 50)
-    acidity_range = np.linspace(data['volatile acidity'].min(), data['volatile acidity'].max(), 50)
-    alcohol_grid, acidity_grid = np.meshgrid(alcohol_range, acidity_range)
-
-    # Predict quality for each combination of alcohol and acidity
-    grid_data = np.c_[alcohol_grid.ravel(), acidity_grid.ravel()]
-    grid_poly = poly.transform(grid_data)
-    quality_grid = model.predict(grid_poly).reshape(alcohol_grid.shape)
-
-    # Plot 3D visualization
-    fig = plt.figure(figsize=(12, 8))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X[:, 0], X[:, 1], y, c=y, cmap='viridis', alpha=0.6, label='Observed Data')
-    ax.plot_surface(alcohol_grid, acidity_grid, quality_grid, cmap='viridis', alpha=0.7, edgecolor='none')
-    ax.set_title("3D Visualization: Alcohol & Volatile Acidity vs Quality")
-    ax.set_xlabel("Alcohol")
-    ax.set_ylabel("Volatile Acidity")
-    ax.set_zlabel("Quality")
-    ax.text2D(0.05, 0.95, f"R^2 = {r2:.3f}\nRMSE = {rmse:.3f}", transform=ax.transAxes) # Add metrics to plot
-    save_plot("outputs/final_vis/3D_quality_visualization.png")
-
-
 def save_plot(filepath):
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     plt.tight_layout()
     plt.savefig(filepath)
     plt.close()
-
 
 if __name__ == "__main__":
     main()
